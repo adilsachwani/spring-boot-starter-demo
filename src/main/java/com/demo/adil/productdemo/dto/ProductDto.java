@@ -2,19 +2,10 @@ package com.demo.adil.productdemo.dto;
 
 public class ProductDto {
 
-    private Long productId;
     private String title;
     private String description;
     private Integer price;
     private Long categoryId;
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
 
     public String getTitle() {
         return title;

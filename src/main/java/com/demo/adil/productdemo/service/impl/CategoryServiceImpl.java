@@ -43,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
         CategoryResponseDto categoryResponseDto = new CategoryResponseDto();
         BeanUtils.copyProperties(categoryDto, category);
 
-        category = categoryRepository.saveAndFlush(category);
+        category = categoryRepository.save(category);
         BeanUtils.copyProperties(category, categoryResponseDto);
 
         return categoryResponseDto;
