@@ -2,12 +2,10 @@ package com.demo.adil.productdemo.controller;
 
 import com.demo.adil.productdemo.dto.CategoryDto;
 import com.demo.adil.productdemo.dto.CategoryResponseDto;
-import com.demo.adil.productdemo.models.Category;
-import com.demo.adil.productdemo.repository.CategoryRepository;
 import com.demo.adil.productdemo.service.CategoryService;
-import com.demo.adil.productdemo.service.impl.CategoryServiceImpl;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,28 +18,33 @@ public class CategoryController {
     CategoryService categoryService;
 
     @GetMapping
-    public List<CategoryResponseDto> getAllCategories(){
-        return categoryService.getAllCategories();
+    public ResponseEntity<List<CategoryResponseDto>> getAllCategories(){
+        List<CategoryResponseDto> categories = categoryService.getAllCategories();
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public CategoryResponseDto getCategory(@PathVariable(name = "id") Long categoryId){
-        return categoryService.getCategory(categoryId);
+    public ResponseEntity<CategoryResponseDto> getCategory(@PathVariable(name = "id") Long categoryId){
+        CategoryResponseDto categoryResponseDto = categoryService.getCategory(categoryId);
+        return new ResponseEntity<>(categoryResponseDto, HttpStatus.OK);
     }
 
     @PostMapping
-    public CategoryResponseDto createCategory(@RequestBody CategoryDto categoryDto){
-        return categoryService.createCategory(categoryDto);
+    public ResponseEntity<CategoryResponseDto> createCategory(@RequestBody CategoryDto categoryDto){
+        CategoryResponseDto categoryResponseDto = categoryService.createCategory(categoryDto);
+        return new ResponseEntity<>(categoryResponseDto, HttpStatus.OK);
     }
 
     @PutMapping("{id}")
-    public CategoryResponseDto updateCategory(@PathVariable(name = "id") Long categoryId, @RequestBody CategoryDto categoryDto){
-        return categoryService.updateCategory(categoryId, categoryDto);
+    public ResponseEntity<CategoryResponseDto> updateCategory(@PathVariable(name = "id") Long categoryId, @RequestBody CategoryDto categoryDto){
+        CategoryResponseDto categoryResponseDto = categoryService.updateCategory(categoryId, categoryDto);
+        return new ResponseEntity<>(categoryResponseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public void deleteCategory(@PathVariable(name = "id") Long categoryId){
+    public ResponseEntity<Void> deleteCategory(@PathVariable(name = "id") Long categoryId){
         categoryService.deleteCategory(categoryId);
+        return ResponseEntity.noContent().build();
     }
 
 }
