@@ -29,6 +29,7 @@ public class Product {
     private Integer price;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_id")
     private Category category;
 
 }
