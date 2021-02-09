@@ -1,6 +1,5 @@
 package com.demo.adil.productdemo.dto;
 
-import com.demo.adil.productdemo.models.Category;
 import lombok.*;
 
 @Getter
@@ -18,6 +17,6 @@ public class ProductResponseDto {
 
     private Integer price;
 
-    private Category category;
+    private CategoryResponseDto category;
 
 }
