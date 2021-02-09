@@ -70,6 +70,13 @@ public class ProductServiceUnitTest {
         Assertions.assertEquals(productDto.getTitle(), productResponseDto.getTitle());
     }
 
+    @Test void testGetProductsByCategory(){
+        Mockito.when(productRepository.findByCategory(any())).thenReturn(stubListOfProduct());
+        List<ProductResponseDto> products = productService.getProductsByCategoryId(1L);
+        Assertions.assertNotNull(products);
+        Assertions.assertEquals(1L, products.size());
+    }
+
     Product stubProduct(){
         Category category = Category.builder()
                 .categoryId(1L)

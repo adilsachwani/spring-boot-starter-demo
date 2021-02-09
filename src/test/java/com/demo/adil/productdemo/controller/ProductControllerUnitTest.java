@@ -97,6 +97,18 @@ public class ProductControllerUnitTest {
                 .andDo(print());
     }
 
+    @Test
+    @WithMockUser(username = "user", password = "password", roles = "ADMIN")
+    public void testGetProductsByCategory() throws Exception {
+        List<ProductResponseDto> products = stubListOfProductResponseDto();
+        Mockito.when(productService.getProductsByCategoryId(any())).thenReturn(products);
+        String responseJSON = new ObjectMapper().writeValueAsString(products);
+        mockMvc.perform(get("/api/private/user/v1/products/category/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(responseJSON))
+                .andDo(print());
+    }
+
     private ProductDto stubProductDto(){
         return ProductDto.builder()
                 .title("Bat")
