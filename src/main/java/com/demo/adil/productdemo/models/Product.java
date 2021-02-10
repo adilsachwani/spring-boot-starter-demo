@@ -6,7 +6,6 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity(name = "products")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Getter
 @Setter
 @NoArgsConstructor

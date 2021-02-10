@@ -6,7 +6,6 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity(name = "categories")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Getter
 @Setter
 @NoArgsConstructor
