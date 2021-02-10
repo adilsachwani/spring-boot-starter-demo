@@ -2,14 +2,13 @@ package com.demo.adil.productdemo.service.impl;
 
 import com.demo.adil.productdemo.dto.CategoryDto;
 import com.demo.adil.productdemo.dto.CategoryResponseDto;
+import com.demo.adil.productdemo.mapper.CategoryMapper;
 import com.demo.adil.productdemo.models.Category;
 import com.demo.adil.productdemo.repository.CategoryRepository;
 import com.demo.adil.productdemo.service.CategoryService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,46 +17,36 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Autowired
+    CategoryMapper categoryMapper;
+
     @Override
     public List<CategoryResponseDto> getAllCategories() {
-        List<CategoryResponseDto> categories = new ArrayList<>();
-        for(Category category : categoryRepository.findAll()){
-            CategoryResponseDto categoryResponseDto = new CategoryResponseDto();
-            BeanUtils.copyProperties(category, categoryResponseDto);
-            categories.add(categoryResponseDto);
-        }
-        return categories;
+        List<Category> categories = categoryRepository.findAll();
+        return categoryMapper.toListResponseDto(categories);
     }
 
     @Override
     public CategoryResponseDto getCategory(Long categoryId) {
-        CategoryResponseDto categoryResponseDto = new CategoryResponseDto();
         Category category = categoryRepository.getOne(categoryId);
-        BeanUtils.copyProperties(category, categoryResponseDto);
-        return categoryResponseDto;
+        return categoryMapper.toResponseDto(category);
     }
 
     @Override
     public CategoryResponseDto createCategory(CategoryDto categoryDto) {
-        Category category = new Category();
-        CategoryResponseDto categoryResponseDto = new CategoryResponseDto();
-        BeanUtils.copyProperties(categoryDto, category);
-
+        Category category = categoryMapper.fromDto(categoryDto);
         category = categoryRepository.save(category);
-        BeanUtils.copyProperties(category, categoryResponseDto);
-
-        return categoryResponseDto;
+        return categoryMapper.toResponseDto(category);
     }
 
     @Override
     public CategoryResponseDto updateCategory(Long categoryId, CategoryDto categoryDto) {
-        Category currentCategory = categoryRepository.getOne(categoryId);
-        CategoryResponseDto categoryResponseDto = new CategoryResponseDto();
-        BeanUtils.copyProperties(categoryDto, currentCategory, "categoryId");
-
-        Category updatedCategory = categoryRepository.save(currentCategory);
-        BeanUtils.copyProperties(updatedCategory, categoryResponseDto);
-        return categoryResponseDto;
+        if(Boolean.FALSE.equals(categoryRepository.existsById(categoryId))){
+            throw new RuntimeException("Category doesn't exist");
+        }
+        Category category = categoryMapper.fromDto(categoryDto);
+        category.setCategoryId(categoryId);
+        return categoryMapper.toResponseDto(categoryRepository.save(category));
     }
 
     @Override
